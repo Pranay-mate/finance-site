@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PLANNING.md — finance-site</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #0f1115;
+    --surface: #161922;
+    --surface-2: #1d2230;
+    --border: #2a3142;
+    --text: #e6e9f0;
+    --muted: #9098ad;
+    --accent: #6ee7b7;
+    --accent-2: #60a5fa;
+    --warn: #fbbf24;
+    --danger: #f87171;
+    --code-bg: #0b0d12;
+    --check-bg: rgba(110, 231, 183, 0.12);
+    --check-border: rgba(110, 231, 183, 0.35);
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f8fb;
+      --surface-2: #eef1f7;
+      --border: #d8dde7;
+      --text: #1a1d24;
+      --muted: #5a6478;
+      --accent: #047857;
+      --accent-2: #1d4ed8;
+      --warn: #b45309;
+      --danger: #b91c1c;
+      --code-bg: #f0f2f7;
+      --check-bg: rgba(4, 120, 87, 0.08);
+      --check-border: rgba(4, 120, 87, 0.25);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 48px;
+    padding: 32px;
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; padding: 16px; gap: 16px; }
+    nav.toc { position: static !important; max-height: none !important; }
+  }
+  nav.toc {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+  }
+  nav.toc h3 {
+    margin: 0 0 12px 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  nav.toc ul { list-style: none; padding: 0; margin: 0; }
+  nav.toc li { margin: 6px 0; }
+  nav.toc a {
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  nav.toc a:hover { background: var(--surface-2); color: var(--accent); }
+  .breadcrumb { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .breadcrumb a { color: var(--accent-2); text-decoration: none; }
+  h1 { font-size: 36px; margin: 0 0 8px 0; letter-spacing: -0.02em; }
+  h2 {
+    font-size: 24px;
+    margin: 40px 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h3 { font-size: 18px; margin: 24px 0 8px 0; }
+  h4 { font-size: 15px; margin: 20px 0 6px 0; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  p { margin: 12px 0; }
+  ul { padding-left: 0; list-style: none; }
+  li { margin: 6px 0; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 0.88em;
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+  a { color: var(--accent-2); }
+  strong { color: var(--text); }
+
+  /* Phase status pill */
+  .phase-status {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .phase-status.active { background: rgba(96,165,250,0.15); color: var(--accent-2); border-color: rgba(96,165,250,0.4); }
+  .phase-status.upcoming { background: var(--surface-2); }
+  .phase-status.future { opacity: 0.7; }
+
+  /* Checkbox list */
+  ul.tasks { padding-left: 0; }
+  ul.tasks li {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 6px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  ul.tasks li::before {
+    content: "";
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    margin-top: 4px;
+  }
+  ul.tasks li.done { background: var(--check-bg); border-color: var(--check-border); }
+  ul.tasks li.done::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3 3 7-7'/></svg>");
+    background-size: contain;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: var(--surface-2); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  tr:last-child td { border-bottom: none; }
+  td.num { font-family: ui-monospace, monospace; color: var(--muted); }
+  td.slug code { font-size: 0.85em; }
+  .complexity {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .complexity.low { background: rgba(110,231,183,0.15); color: var(--accent); border: 1px solid rgba(110,231,183,0.35); }
+  .complexity.medium { background: rgba(96,165,250,0.15); color: var(--accent-2); border: 1px solid rgba(96,165,250,0.35); }
+  .complexity.high { background: rgba(251,191,36,0.15); color: var(--warn); border: 1px solid rgba(251,191,36,0.35); }
+
+  /* Progress bar */
+  .progress-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 24px 0;
+  }
+  .progress-wrap h3 { margin-top: 0; }
+  .progress-bar {
+    height: 10px;
+    background: var(--surface-2);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 12px 0 8px 0;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 0.3s ease;
+  }
+  .progress-stats { display: flex; gap: 24px; font-size: 13px; color: var(--muted); }
+  .progress-stats strong { color: var(--text); font-family: ui-monospace, monospace; }
+
+  /* Phase card */
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+  }
+  .phase.future { opacity: 0.85; }
+  .phase-goal {
+    font-style: italic;
+    color: var(--muted);
+    border-left: 3px solid var(--accent-2);
+    padding-left: 12px;
+    margin: 12px 0 20px 0;
+  }
+
+  .open-q {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 24px 0;
+  }
+  .open-q h2 { border: none; padding: 0; margin: 0 0 12px 0; }
+
+  .header-meta { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc">
+    <h3>Phases</h3>
+    <ul>
+      <li><a href="#phase-0">Phase 0 — Foundation</a></li>
+      <li><a href="#phase-1">Phase 1 — Calculators</a></li>
+      <li><a href="#phase-2">Phase 2 — Content</a></li>
+      <li><a href="#phase-3">Phase 3 — Personalization</a></li>
+      <li><a href="#phase-4">Phase 4 — Differentiation</a></li>
+      <li><a href="#open-questions">Open questions</a></li>
+    </ul>
+    <h3 style="margin-top:20px">Other docs</h3>
+    <ul>
+      <li><a href="AGENTS.html">AGENTS</a></li>
+      <li><a href="README.html">README</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="breadcrumb"><a href="README.html">finance-site</a> / PLANNING.md</div>
+    <h1>PLANNING.md</h1>
+    <p class="header-meta">Phased roadmap. Update as phases complete.</p>
+
+    <div class="progress-wrap">
+      <h3>Overall progress</h3>
+      <div class="progress-bar"><div class="progress-fill" style="width: 100%"></div></div>
+      <div class="progress-stats">
+        <span>Phase: <strong>2 + 4 (parallel)</strong></span>
+        <span>Calculators: <strong>17</strong></span>
+        <span>Articles: <strong>11 / 20+</strong></span>
+        <span>Words shipped: <strong>~25K</strong></span>
+        <span>Tests: <strong>182 ✓</strong></span>
+        <span>Routes: <strong>31 static</strong></span>
+      </div>
+      <p style="margin: 12px 0 0 0; font-size: 13px; color: var(--muted);">
+        Last updated: <strong>2026-04-30</strong> · Local: <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a> · <strong>Quality gates:</strong> typecheck ✓ · lint ✓ · 182 tests ✓ · build ✓
+      </p>
+    </div>
+
+    <!-- PHASE 0 -->
+    <div class="phase">
+      <h2 id="phase-0">Phase 0 — Foundation <span class="phase-status active">Ready for Phase 1 · 13 / 14</span></h2>
+      <p class="phase-goal">Goal: ship a deployable Next.js skeleton with SEO plumbing in place so every subsequent page inherits it for free.</p>
+      <ul class="tasks">
+        <li class="done"><code>create-next-app</code> with TypeScript, Tailwind, App Router, ESLint <span style="color: var(--muted); font-size: 13px;">— Next.js 16.2.4, React 19.2, Tailwind v4, TS 5.9, pnpm 10.4</span></li>
+        <li>Configure <code>next.config.ts</code> (image domains, redirects placeholder) <span style="color: var(--muted); font-size: 13px;">— intentionally deferred; default config OK until external image source is added</span></li>
+        <li class="done">Set up <code>app/layout.tsx</code> with default Metadata, viewport, theme</li>
+        <li class="done">Add <code>app/sitemap.ts</code> and <code>app/robots.ts</code></li>
+        <li class="done">Add <code>app/manifest.ts</code> (PWA-friendly, even though we're not a PWA yet)</li>
+        <li class="done">Install shadcn/ui, set up <code>components/ui/</code> <span style="color: var(--muted); font-size: 13px;">— button, input, slider, card, tabs, label, select, separator</span></li>
+        <li class="done">Set up <code>lib/seo.ts</code> helper for <code>generateMetadata</code> (title template, canonical builder, OG defaults)</li>
+        <li class="done">Set up <code>lib/jsonld.ts</code> helpers for SoftwareApplication, FAQPage, BreadcrumbList, Organization, WebSite, Article</li>
+        <li class="done">Homepage stub with Organization + WebSite JSON-LD <span style="color: var(--muted); font-size: 13px;">— + Hero, calculator grid by category, FAQ section</span></li>
+        <li class="done">404 page (custom, with helpful links — Google indexes it as a soft-404 signal otherwise)</li>
+        <li class="done">Vitest + React Testing Library set up <span style="color: var(--muted); font-size: 13px;">— 14 tests passing across 3 files (registry, site URL, SiteHeader)</span></li>
+        <li class="done">CI: GitHub Actions running <code>lint</code>, <code>typecheck</code>, <code>test</code>, <code>build</code> <span style="color: var(--muted); font-size: 13px;">— <code>.github/workflows/ci.yml</code></span></li>
+        <li class="done">Lighthouse CI in GitHub Actions, fail if SEO &lt; 100 or Perf &lt; 95 <span style="color: var(--muted); font-size: 13px;">— also gates A11y ≥ 95 and Best-Practices ≥ 95</span></li>
+        <li>Deploy to Vercel, confirm preview URLs work <span style="color: var(--warn); font-size: 13px; font-weight: 600;">— deferred to end (per user, 2026-04-29); revisit after Phase 1</span></li>
+      </ul>
+
+      <h4 style="margin-top: 28px;">Bonus already done (originally Phase 1 work)</h4>
+      <ul class="tasks">
+        <li class="done"><code>lib/calculators/registry.ts</code> — single source of truth for sitemap, related links, homepage grid (12 calculators with metadata, keywords, related links)</li>
+        <li class="done"><code>lib/site.ts</code> — site config constants (name, URL, locale, description)</li>
+        <li class="done"><code>SiteHeader</code>, <code>SiteFooter</code>, <code>Hero</code>, <code>CalculatorGrid</code>, <code>FaqSection</code> components</li>
+        <li class="done"><code>.env.example</code> with <code>NEXT_PUBLIC_SITE_URL</code> placeholder for production</li>
+      </ul>
+
+      <div style="margin-top: 24px; padding: 16px; background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.3); border-radius: 8px;">
+        <p style="margin: 0 0 8px 0; font-weight: 600;">To unblock the final Vercel deploy:</p>
+        <ol style="margin: 0; padding-left: 20px; font-size: 14px;">
+          <li>Decide on a domain → set <code>NEXT_PUBLIC_SITE_URL</code> in Vercel env</li>
+          <li>Create a GitHub repo and push</li>
+          <li>Connect to Vercel (auto-detects Next.js, no extra config needed)</li>
+          <li>Update <code>SITE.name</code> in <code>src/lib/site.ts</code> once brand is decided</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div class="phase">
+      <h2 id="phase-1">Phase 1 — Financial Calculators (12) <span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">COMPLETE · 12 / 12</span></h2>
+      <p class="phase-goal">All 12 calculators shipped between 2026-04-29 and 2026-04-30. 134 unit tests, all routes statically prerendered, quality gates clean.</p>
+
+      <table>
+        <thead>
+          <tr><th>#</th><th>Calculator</th><th>Slug</th><th>Complexity</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td>EMI Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/emi-calculator" target="_blank" rel="noopener">/calculators/emi-calculator</a></code></td><td><span class="complexity low">Low</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">2</td><td>FD Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/fd-calculator" target="_blank" rel="noopener">/calculators/fd-calculator</a></code></td><td><span class="complexity low">Low</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">3</td><td>RD Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/rd-calculator" target="_blank" rel="noopener">/calculators/rd-calculator</a></code></td><td><span class="complexity low">Low</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">4</td><td>Lumpsum Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/lumpsum-calculator" target="_blank" rel="noopener">/calculators/lumpsum-calculator</a></code></td><td><span class="complexity low">Low</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">5</td><td>Mutual Fund Returns Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/mutual-fund-returns-calculator" target="_blank" rel="noopener">/calculators/mutual-fund-returns-calculator</a></code></td><td><span class="complexity low">Low</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">6</td><td>PPF Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/ppf-calculator" target="_blank" rel="noopener">/calculators/ppf-calculator</a></code></td><td><span class="complexity medium">Medium</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">7</td><td>EPF Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/epf-calculator" target="_blank" rel="noopener">/calculators/epf-calculator</a></code></td><td><span class="complexity medium">Medium</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">8</td><td>Sukanya Samriddhi Yojana</td><td class="slug"><code><a href="http://localhost:3000/calculators/sukanya-samriddhi-yojana-calculator" target="_blank" rel="noopener">/calculators/sukanya-samriddhi-yojana-calculator</a></code></td><td><span class="complexity medium">Medium</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">9</td><td>SWP Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/swp-calculator" target="_blank" rel="noopener">/calculators/swp-calculator</a></code></td><td><span class="complexity medium">Medium</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">10</td><td>GST Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/gst-calculator" target="_blank" rel="noopener">/calculators/gst-calculator</a></code></td><td><span class="complexity low">Low</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">11</td><td>Income Tax Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/income-tax-calculator" target="_blank" rel="noopener">/calculators/income-tax-calculator</a></code></td><td><span class="complexity high">High</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+          <tr><td class="num">12</td><td>XIRR Calculator</td><td class="slug"><code><a href="http://localhost:3000/calculators/xirr-calculator" target="_blank" rel="noopener">/calculators/xirr-calculator</a></code></td><td><span class="complexity high">High</span></td><td><span class="phase-status" style="background: rgba(110,231,183,0.15); color: var(--accent); border-color: rgba(110,231,183,0.4);">Live</span></td></tr>
+        </tbody>
+      </table>
+
+      <div style="background: rgba(110,231,183,0.06); border: 1px solid rgba(110,231,183,0.25); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <p style="margin: 0; font-weight: 600;">Phase 1 wrapped — what was actually shipped:</p>
+        <ul style="margin: 10px 0 0 0; padding-left: 22px; font-size: 14px; line-height: 1.7;">
+          <li><strong>134 unit tests</strong> across 16 files. Every calculator's math verified against published reference values (SBI/HDFC/ICICI/India Post/EPFO/Groww/ClearTax/Excel).</li>
+          <li><strong>15 static routes</strong> prerendered, including sitemap.xml, robots.txt, manifest.webmanifest.</li>
+          <li><strong>~107 FAQs</strong> across calculator pages (each emitted as FAQPage JSON-LD for rich-result eligibility).</li>
+          <li>Each calculator page: page-specific metadata + canonical + Open Graph + Twitter card + BreadcrumbList + SoftwareApplication + FAQPage JSON-LD.</li>
+          <li>Quality gates (typecheck, lint, test, build): all green.</li>
+        </ul>
+      </div>
+
+      <h4>Per-calculator deliverables (each of the 12)</h4>
+      <ul class="tasks">
+        <li>Pure-function math in <code>lib/calculators/&lt;name&gt;.ts</code></li>
+        <li>Unit tests with ≥3 cases verified against a public reference (ClearTax, Groww, official site)</li>
+        <li>Form UI with slider + number input pairs, live result update</li>
+        <li>Result card (headline number) + breakdown table + chart</li>
+        <li>"How it works" section with the formula in math notation</li>
+        <li>"How to use" 3–5 step guide</li>
+        <li>5–8 FAQs (also emitted as FAQPage JSON-LD)</li>
+        <li>Related calculators block (3 links)</li>
+        <li>Page-specific Metadata + canonical</li>
+        <li>SoftwareApplication + FAQPage + BreadcrumbList JSON-LD</li>
+        <li>Lighthouse: SEO 100, Perf ≥95, A11y ≥95</li>
+      </ul>
+
+      <h4>Shared infrastructure for Phase 1</h4>
+      <ul class="tasks">
+        <li class="done"><code>&lt;CalculatorPage&gt;</code> shell — consistent layout (breadcrumb, intro, calculator, how-it-works, how-to-use, FAQ, related)</li>
+        <li class="done"><code>&lt;NumberInput&gt;</code> (slider + number, with INR / % / years / months formatting)</li>
+        <li class="done"><code>&lt;ResultCard&gt;</code> (headline + sub-metrics grid)</li>
+        <li class="done"><code>&lt;BreakdownTable&gt;</code> (generic, column-driven)</li>
+        <li class="done"><code>&lt;DonutChart&gt;</code> + <code>&lt;DonutLegend&gt;</code> (principal-vs-interest, equity-vs-debt ratios)</li>
+        <li class="done"><code>&lt;LineChart&gt;</code> (growth-over-time)</li>
+        <li class="done"><code>&lt;FaqSection&gt;</code> — Phase 0; emits FAQPage JSON-LD</li>
+        <li class="done"><code>&lt;RelatedCalculators&gt;</code> — pulls from registry</li>
+        <li class="done">Calculator registry — single source of truth for sitemap, related links, homepage grid</li>
+        <li class="done">Format helpers: <code>formatINR</code>, <code>formatINRCompact</code>, <code>formatPercent</code>, <code>formatYears</code>, <code>formatNumber</code> (Indian lakh/crore grouping)</li>
+      </ul>
+
+      <h4>Calculator progress log (1-day delivery, 2026-04-29 → 2026-04-30)</h4>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Calculator</th><th>Math file</th><th>Tests</th><th>Reference</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td>EMI</td><td><code>lib/calculators/emi.ts</code></td><td class="num">9</td><td>SBI / HDFC / ICICI reducing-balance</td></tr>
+          <tr><td class="num">2</td><td>FD</td><td><code>lib/calculators/fd.ts</code></td><td class="num">10</td><td>SBI / HDFC quarterly compounding</td></tr>
+          <tr><td class="num">3</td><td>RD</td><td><code>lib/calculators/rd.ts</code></td><td class="num">10</td><td>SBI / HDFC monthly RD with quarterly rests</td></tr>
+          <tr><td class="num">4</td><td>Lumpsum</td><td><code>lib/calculators/lumpsum.ts</code></td><td class="num">7</td><td>Standard compound interest formula</td></tr>
+          <tr><td class="num">5</td><td>MF Returns</td><td><code>lib/calculators/mutual-fund.ts</code></td><td class="num">9</td><td>Groww / ClearTax SIP annuity-due</td></tr>
+          <tr><td class="num">6</td><td>PPF</td><td><code>lib/calculators/ppf.ts</code></td><td class="num">9</td><td>India Post / SBI annual compounding</td></tr>
+          <tr><td class="num">7</td><td>EPF</td><td><code>lib/calculators/epf.ts</code></td><td class="num">9</td><td>EPFO contribution model + salary growth</td></tr>
+          <tr><td class="num">8</td><td>SSY</td><td><code>lib/calculators/ssy.ts</code></td><td class="num">9</td><td>India Post 21-yr scheme rules</td></tr>
+          <tr><td class="num">9</td><td>SWP</td><td><code>lib/calculators/swp.ts</code></td><td class="num">8</td><td>Bengen 4% rule cross-check</td></tr>
+          <tr><td class="num">10</td><td>GST</td><td><code>lib/calculators/gst.ts</code></td><td class="num">9</td><td>GST Council slabs, CGST/SGST/IGST split</td></tr>
+          <tr><td class="num">11</td><td>Income Tax</td><td><code>lib/calculators/income-tax.ts</code></td><td class="num">14</td><td>FY 2025-26 slabs, 87A, surcharge, cess</td></tr>
+          <tr><td class="num">12</td><td>XIRR</td><td><code>lib/calculators/xirr.ts</code></td><td class="num">9</td><td>Excel XIRR — Newton-Raphson + bisection</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Phase 1 exit criteria</h4>
+      <ul class="tasks">
+        <li class="done">All 12 calculators live and indexable</li>
+        <li>Submitted to Google Search Console, sitemap accepted <span style="color: var(--muted); font-size: 13px;">— pending Vercel deploy</span></li>
+        <li>At least 3 calculators ranking on page 1 within 90 days for long-tail query <span style="color: var(--muted); font-size: 13px;">— track post-launch</span></li>
+        <li>Average page weight &lt; 200KB, average LCP &lt; 2.0s on 4G <span style="color: var(--muted); font-size: 13px;">— measure on Vercel preview</span></li>
+      </ul>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <h2 id="phase-2">Phase 2 — Content &amp; Authority <span class="phase-status active">In progress · 3 / 20+ articles</span></h2>
+      <p class="phase-goal">Calculators alone won't rank on competitive head terms. MDX pipeline is set up; first 3 cornerstone articles live and indexable.</p>
+
+      <h4>Infrastructure</h4>
+      <ul class="tasks">
+        <li class="done">Blog/articles section at <code>/learn/&lt;slug&gt;</code> — hub page + per-article static routes</li>
+        <li class="done">MDX-based content pipeline <span style="color: var(--muted); font-size: 13px;">— @next/mdx 16 + custom components mapper at <code>src/mdx-components.tsx</code></span></li>
+        <li class="done">Article schema (<code>articleLd</code>), breadcrumb (<code>breadcrumbLd</code>), per-page Metadata</li>
+        <li class="done">Article registry at <code>src/lib/articles/registry.ts</code> — single source of truth (drives hub, sitemap, related-articles)</li>
+        <li class="done"><code>&lt;ArticleLayout&gt;</code> shell — hero, byline, "Run the numbers" calculator block, related articles, full JSON-LD</li>
+        <li class="done">Sitemap auto-includes live articles</li>
+        <li class="done">Header nav includes Learn link</li>
+      </ul>
+
+      <h4>Articles shipped (11 total · ~25,000 words · 2026-04-30)</h4>
+      <table>
+        <thead>
+          <tr><th>Slug</th><th>Title</th><th>Words</th><th>Read</th><th>Category</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/ppf-vs-epf-vs-elss" target="_blank" rel="noopener">ppf-vs-epf-vs-elss</a></code></td>
+            <td>PPF vs EPF vs ELSS — Which 80C Wins</td>
+            <td class="num">1850</td>
+            <td class="num">9 min</td>
+            <td>Investing</td>
+          </tr>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/how-much-sip-for-1-crore" target="_blank" rel="noopener">how-much-sip-for-1-crore</a></code></td>
+            <td>How Much SIP To Reach ₹1 Crore?</td>
+            <td class="num">2100</td>
+            <td class="num">11 min</td>
+            <td>Investing</td>
+          </tr>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/elss-vs-index-funds" target="_blank" rel="noopener">elss-vs-index-funds</a></code></td>
+            <td>ELSS vs Index Funds — Does 80C Justify the Cost?</td>
+            <td class="num">1900</td>
+            <td class="num">10 min</td>
+            <td>Investing</td>
+          </tr>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/new-vs-old-tax-regime-fy-2025-26" target="_blank" rel="noopener">new-vs-old-tax-regime-fy-2025-26</a></code></td>
+            <td>New vs Old Tax Regime FY 2025-26</td>
+            <td class="num">1950</td>
+            <td class="num">10 min</td>
+            <td>Tax</td>
+          </tr>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/mutual-fund-taxation-india" target="_blank" rel="noopener">mutual-fund-taxation-india</a></code></td>
+            <td>Mutual Fund Taxation in India — Complete 2026 Guide</td>
+            <td class="num">2200</td>
+            <td class="num">12 min</td>
+            <td>Tax</td>
+          </tr>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/esop-rsu-taxation-india" target="_blank" rel="noopener">esop-rsu-taxation-india</a></code></td>
+            <td>ESOP & RSU Taxation in India</td>
+            <td class="num">2300</td>
+            <td class="num">13 min</td>
+            <td>Tax</td>
+          </tr>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/tax-saving-for-freelancers" target="_blank" rel="noopener">tax-saving-for-freelancers</a></code></td>
+            <td>Tax-Saving Guide for Freelancers</td>
+            <td class="num">2150</td>
+            <td class="num">12 min</td>
+            <td>Tax</td>
+          </tr>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/fire-india-rule-of-25" target="_blank" rel="noopener">fire-india-rule-of-25</a></code></td>
+            <td>FIRE in India — Rule of 25 (and why 30 might be safer)</td>
+            <td class="num">2400</td>
+            <td class="num">13 min</td>
+            <td>Retirement</td>
+          </tr>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/nps-vs-ppf" target="_blank" rel="noopener">nps-vs-ppf</a></code></td>
+            <td>NPS vs PPF — Which Retirement Vehicle Wins</td>
+            <td class="num">1900</td>
+            <td class="num">10 min</td>
+            <td>Retirement</td>
+          </tr>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/epf-withdrawal-rules" target="_blank" rel="noopener">epf-withdrawal-rules</a></code></td>
+            <td>EPF Withdrawal Rules — Partial, Full & Tax</td>
+            <td class="num">2050</td>
+            <td class="num">11 min</td>
+            <td>Savings</td>
+          </tr>
+          <tr>
+            <td class="slug"><code><a href="http://localhost:3000/learn/how-much-home-loan-can-i-afford" target="_blank" rel="noopener">how-much-home-loan-can-i-afford</a></code></td>
+            <td>How Much Home Loan Can I Afford?</td>
+            <td class="num">2100</td>
+            <td class="num">11 min</td>
+            <td>Loans</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Remaining Phase 2 work</h4>
+      <ul class="tasks">
+        <li>9+ more long-form guides (target: 20+ total)</li>
+        <li>Topic ideas: gold investing (SGB / ETF / physical), NRI tax basics, REITs in India, debt fund alternatives post-2023, retirement income strategies, term insurance vs ULIP, credit score &amp; credit card optimization, emergency fund building</li>
+        <li>Author pages with E-E-A-T signals — needs brand decision</li>
+        <li>Optional: table of contents component for longer articles</li>
+        <li>Optional: reading-progress indicator</li>
+      </ul>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase future">
+      <h2 id="phase-3">Phase 3 — Personalization <span class="phase-status future">When DB makes sense</span></h2>
+      <p class="phase-goal">This is when we add a backend.</p>
+      <ul class="tasks">
+        <li>User accounts (email magic link — no passwords)</li>
+        <li>Save calculator inputs / scenarios</li>
+        <li>"Compare scenarios" feature (e.g., new vs old tax regime side-by-side, saved)</li>
+        <li>Goal-based planning (retirement corpus, child education, home down-payment) — orchestrates multiple calculators</li>
+        <li>Email digest (weekly market/rate updates)</li>
+        <li>Stack to evaluate: Postgres + Drizzle/Prisma, Auth.js, Resend for email</li>
+      </ul>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase">
+      <h2 id="phase-4">Phase 4 — Differentiation + Extended Set <span class="phase-status active">3 / 4 differentiators · 2 essentials added</span></h2>
+      <p class="phase-goal">Phase 4 ships as static pages and helps SEO immediately. Three differentiators built; multi-language deferred (heavy lift, needs brand + translation strategy).</p>
+
+      <h4>Differentiators (vs ClearTax / Groww / ET Money)</h4>
+      <ul class="tasks">
+        <li class="done"><strong>FIRE Calculator</strong> — accumulation + drawdown phases, inflation-adjusted, step-up SIP, corpus survival check, colour-coded safety verdict — <code><a href="http://localhost:3000/calculators/fire-calculator" target="_blank" rel="noopener">/calculators/fire-calculator</a></code> · 10 unit tests</li>
+        <li class="done"><strong>Real Return Calculator</strong> — nominal vs inflation-adjusted (Fisher equation precise) — <code><a href="http://localhost:3000/calculators/real-return-calculator" target="_blank" rel="noopener">/calculators/real-return-calculator</a></code> · 8 unit tests</li>
+        <li class="done"><strong>Tax-Optimal Withdrawal Planner</strong> — slab-aware split across PPF/EPF, equity MF, debt MF · uses ₹1.25L LTCG exemption · vs naive proportional plan — <code><a href="http://localhost:3000/calculators/tax-optimal-withdrawal-calculator" target="_blank" rel="noopener">/calculators/tax-optimal-withdrawal-calculator</a></code> · 10 unit tests · <strong>no competitor offers this</strong></li>
+        <li>Multi-language: Hindi, Tamil, Telugu, Bengali — huge SEO opportunity, low competition; needs i18n setup + translation strategy</li>
+      </ul>
+
+      <h4>Extended set (essential calculators added 2026-04-30)</h4>
+      <ul class="tasks">
+        <li class="done"><strong>Salary Calculator (CTC → Take-home)</strong> — top-3 highest-search query in Indian fintech · breaks CTC into basic / HRA / EPF / PT / income tax · reuses our income-tax engine — <code><a href="http://localhost:3000/calculators/salary-calculator" target="_blank" rel="noopener">/calculators/salary-calculator</a></code> · 11 unit tests</li>
+        <li class="done"><strong>NPS Calculator</strong> — corpus + 60% lump sum + 40% annuity income · supports employer 80CCD(2) — <code><a href="http://localhost:3000/calculators/nps-calculator" target="_blank" rel="noopener">/calculators/nps-calculator</a></code> · 9 unit tests</li>
+      </ul>
+    </div>
+
+    <!-- OPEN QUESTIONS -->
+    <div class="open-q">
+      <h2 id="open-questions">Open questions for the user</h2>
+      <p>Track decisions to make. Don't guess — ask.</p>
+      <ul class="tasks">
+        <li>Domain name?</li>
+        <li>Brand name / logo?</li>
+        <li>Vercel for hosting confirmed, or alternative?</li>
+        <li>Analytics: Plausible (paid, privacy-friendly), Vercel Analytics (built-in), or none for now?</li>
+        <li>Newsletter from day one, or wait until Phase 2?</li>
+        <li>Comments on articles in Phase 2 — yes/no? (Moderation cost is real.)</li>
+      </ul>
+    </div>
+
+    <hr>
+    <p class="header-meta">Companion: <a href="AGENTS.html">AGENTS.html</a> · <a href="README.html">README.html</a></p>
+  </main>
+</div>
+</body>
+</html>

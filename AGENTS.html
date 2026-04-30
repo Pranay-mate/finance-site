@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AGENTS.md — finance-site</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #0f1115;
+    --surface: #161922;
+    --surface-2: #1d2230;
+    --border: #2a3142;
+    --text: #e6e9f0;
+    --muted: #9098ad;
+    --accent: #6ee7b7;
+    --accent-2: #60a5fa;
+    --warn: #fbbf24;
+    --danger: #f87171;
+    --code-bg: #0b0d12;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f8fb;
+      --surface-2: #eef1f7;
+      --border: #d8dde7;
+      --text: #1a1d24;
+      --muted: #5a6478;
+      --accent: #047857;
+      --accent-2: #1d4ed8;
+      --warn: #b45309;
+      --danger: #b91c1c;
+      --code-bg: #f0f2f7;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 48px;
+    padding: 32px;
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; padding: 16px; gap: 16px; }
+    nav.toc { position: static !important; max-height: none !important; }
+  }
+  nav.toc {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+  }
+  nav.toc h3 {
+    margin: 0 0 12px 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  nav.toc ul { list-style: none; padding: 0; margin: 0; }
+  nav.toc li { margin: 6px 0; }
+  nav.toc a {
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  nav.toc a:hover { background: var(--surface-2); color: var(--accent); }
+  .breadcrumb {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .breadcrumb a { color: var(--accent-2); text-decoration: none; }
+  h1 {
+    font-size: 36px;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-size: 24px;
+    margin: 40px 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h3 { font-size: 18px; margin: 24px 0 8px 0; }
+  p { margin: 12px 0; }
+  ul, ol { padding-left: 24px; }
+  li { margin: 6px 0; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 0.9em;
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    font-size: 13px;
+  }
+  pre code { background: none; border: none; padding: 0; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 6px;
+    border: 1px solid transparent;
+  }
+  .badge.must {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--danger);
+    border-color: rgba(248, 113, 113, 0.35);
+  }
+  .badge.should {
+    background: rgba(96, 165, 250, 0.15);
+    color: var(--accent-2);
+    border-color: rgba(96, 165, 250, 0.35);
+  }
+  .badge.dont {
+    background: rgba(251, 191, 36, 0.15);
+    color: var(--warn);
+    border-color: rgba(251, 191, 36, 0.35);
+  }
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .callout.warn { border-left-color: var(--warn); }
+  .callout.danger { border-left-color: var(--danger); }
+  .header-meta {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .metric {
+    display: inline-flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    min-width: 120px;
+  }
+  .metric .label { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; }
+  .metric .value { font-size: 18px; font-weight: 600; color: var(--accent); margin-top: 4px; font-family: ui-monospace, monospace; }
+  strong { color: var(--text); }
+  a { color: var(--accent-2); }
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc">
+    <h3>On this page</h3>
+    <ul>
+      <li><a href="#mission">1. Mission</a></li>
+      <li><a href="#non-negotiables">2. Non-negotiables</a></li>
+      <li><a href="#code-conventions">3. Code conventions</a></li>
+      <li><a href="#content-rules">4. Content rules</a></li>
+      <li><a href="#what-not-to-do">5. What NOT to do</a></li>
+      <li><a href="#working-agreement">6. Working agreement</a></li>
+    </ul>
+    <h3 style="margin-top:20px">Other docs</h3>
+    <ul>
+      <li><a href="PLANNING.html">PLANNING</a></li>
+      <li><a href="README.html">README</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="breadcrumb"><a href="README.html">finance-site</a> / AGENTS.md</div>
+    <h1>AGENTS.md</h1>
+    <p class="header-meta">Guidelines for any AI agent (Claude, Copilot, Cursor, etc.) working on this project. <strong>Read this fully before making changes.</strong></p>
+
+    <h2 id="mission">1. Project Mission</h2>
+    <p>Build a finance-focused web property that <strong>ranks #1 on Google</strong> for high-intent queries around personal finance, investing, growing money, and early retirement (FIRE). Every decision — content, code, UX, performance — must serve that goal.</p>
+    <p><strong>Target audience (initial):</strong> Indian retail investors and FIRE-seekers. Calculators are India-specific (PPF, EPF, SSY, GST, etc.), so default currency is INR and tax rules follow Indian regulations.</p>
+
+    <h2 id="non-negotiables">2. Non-Negotiables</h2>
+    <div class="callout danger"><strong>Hard constraints.</strong> Do not violate without explicit user approval.</div>
+
+    <h3>2.1 SEO is mandatory, not optional</h3>
+    <p>Every page MUST ship with:</p>
+    <ul>
+      <li><span class="badge must">MUST</span> Unique <code>&lt;title&gt;</code> and <code>&lt;meta description&gt;</code> via Next.js Metadata API (<code>generateMetadata</code> or static <code>metadata</code> export)</li>
+      <li><span class="badge must">MUST</span> Canonical URL (<code>alternates.canonical</code>)</li>
+      <li><span class="badge must">MUST</span> Open Graph + Twitter card metadata</li>
+      <li><span class="badge must">MUST</span> JSON-LD structured data:
+        <ul>
+          <li>Calculator pages → <code>SoftwareApplication</code> or <code>WebApplication</code> + <code>FAQPage</code> if FAQs present</li>
+          <li>Article/blog pages → <code>Article</code> + <code>BreadcrumbList</code></li>
+          <li>Homepage → <code>Organization</code> + <code>WebSite</code> (with <code>SearchAction</code>)</li>
+        </ul>
+      </li>
+      <li><span class="badge must">MUST</span> Semantic HTML: one <code>&lt;h1&gt;</code> per page, logical heading hierarchy, real <code>&lt;button&gt;</code>/<code>&lt;a&gt;</code> (no clickable divs)</li>
+      <li><span class="badge must">MUST</span> Internal linking: every calculator page links to ≥3 related calculators and ≥1 explainer article</li>
+      <li><span class="badge must">MUST</span> Image alt text on every <code>&lt;img&gt;</code> / <code>next/image</code></li>
+      <li><span class="badge must">MUST</span> Static pre-rendering (SSG / ISR) for all public pages — no client-only rendering of indexable content</li>
+      <li><span class="badge must">MUST</span> Sitemap.xml + robots.txt auto-generated (Next.js <code>app/sitemap.ts</code> and <code>app/robots.ts</code>)</li>
+    </ul>
+    <div class="callout">Lighthouse <strong>SEO score must stay 100</strong>. Performance, Accessibility, Best Practices must stay <strong>≥95</strong>.</div>
+
+    <h3>2.2 Core Web Vitals budget</h3>
+    <div class="pill-row">
+      <div class="metric"><span class="label">LCP</span><span class="value">&lt; 2.0s</span></div>
+      <div class="metric"><span class="label">INP</span><span class="value">&lt; 200ms</span></div>
+      <div class="metric"><span class="label">CLS</span><span class="value">&lt; 0.1</span></div>
+      <div class="metric"><span class="label">JS / route</span><span class="value">&lt; 150KB</span></div>
+    </div>
+    <p>If a change pushes any metric over budget, fix it before merging.</p>
+
+    <h3>2.3 UI/UX must be top-notch</h3>
+    <ul>
+      <li><strong>Mobile-first.</strong> Test every screen at 375px width before claiming done.</li>
+      <li><strong>Accessibility:</strong> WCAG 2.2 AA. Keyboard-navigable. Visible focus states. <code>prefers-reduced-motion</code> honored. Color contrast ≥ 4.5:1.</li>
+      <li><strong>Inputs:</strong> numeric inputs use sliders + number fields together (industry pattern for calculators — see ClearTax, Groww). Update results live as user types/drags.</li>
+      <li><strong>Results:</strong> headline number large and immediate, breakdown table below, chart (donut/line) for visualization.</li>
+      <li>No layout shift while typing. No janky animations. No modal dialogs unless absolutely required.</li>
+    </ul>
+
+    <h3>2.4 Tech stack (locked unless user changes it)</h3>
+    <ul>
+      <li><strong>Next.js</strong> (latest stable, App Router)</li>
+      <li><strong>TypeScript</strong> (strict mode)</li>
+      <li><strong>Tailwind CSS</strong> (v4 if stable, else v3)</li>
+      <li><strong>shadcn/ui</strong> for primitive components (button, input, slider, card, tabs)</li>
+      <li><strong>Recharts</strong> or <strong>Visx</strong> for charts (Recharts default — simpler, smaller)</li>
+      <li><strong>Zod</strong> for input validation</li>
+      <li><strong>No database, no API routes</strong> in Phase 1 — calculators are pure client/server functions</li>
+      <li>Deploy target: Vercel (assume; confirm with user before adding vercel-specific code)</li>
+    </ul>
+
+    <h2 id="code-conventions">3. Code Conventions</h2>
+    <ul>
+      <li>Calculator math lives in <code>lib/calculators/&lt;name&gt;.ts</code> as <strong>pure functions</strong>. No React, no DOM.</li>
+      <li>Each calculator gets a co-located test file <code>lib/calculators/&lt;name&gt;.test.ts</code>. Math correctness is the most important test surface — verify against published examples (e.g., SBI's PPF calculator, official Income Tax department tables).</li>
+      <li>UI components in <code>components/</code>. Calculator-specific UI in <code>app/calculators/&lt;slug&gt;/_components/</code>.</li>
+      <li>Route per calculator: <code>app/calculators/&lt;slug&gt;/page.tsx</code>. Slug must match the SEO-targeted keyword (e.g., <code>ppf-calculator</code>, not <code>ppf</code>).</li>
+      <li>Server Components by default. Add <code>"use client"</code> only when you need state/effects (i.e., the interactive form).</li>
+      <li>No barrel files (<code>index.ts</code> re-exports) — they bloat bundles.</li>
+    </ul>
+
+    <h2 id="content-rules">4. Content rules</h2>
+    <ul>
+      <li>Every calculator page has, in this order: H1, 1-paragraph intro, the calculator, results, "How it works" section with the formula, "How to use" steps, FAQ (5-8 Qs), related calculators.</li>
+      <li>Word count target per calculator page: <strong>800–1500 words</strong> of supporting content. Thin pages don't rank.</li>
+      <li>FAQ answers go in JSON-LD <code>FAQPage</code> schema verbatim.</li>
+      <li>Cite official sources (RBI, India Post, EPFO, Income Tax Department) where applicable, with <code>rel="noopener"</code> external links.</li>
+    </ul>
+
+    <h2 id="what-not-to-do">5. What NOT to do</h2>
+    <ul>
+      <li><span class="badge dont">DON'T</span> Add a database, auth, or API routes in Phase 1. If a feature seems to need it, flag to user — it's probably Phase 2.</li>
+      <li><span class="badge dont">DON'T</span> Add tracking/analytics without asking (privacy + perf cost). When added, prefer Plausible or Vercel Analytics over GA4.</li>
+      <li><span class="badge dont">DON'T</span> Add heavy dependencies (moment.js, lodash full, jQuery, etc.). Use date-fns if needed; native methods first.</li>
+      <li><span class="badge dont">DON'T</span> Ship images without <code>next/image</code>, explicit <code>width</code>/<code>height</code>, and modern format (AVIF/WebP).</li>
+      <li><span class="badge dont">DON'T</span> Create marketing fluff pages without a target keyword. Every indexable page must answer a real search query.</li>
+      <li><span class="badge dont">DON'T</span> Use <code>useEffect</code> for derived state. Compute it during render.</li>
+      <li><span class="badge dont">DON'T</span> Generate emojis in code or content unless the user asks.</li>
+    </ul>
+
+    <h2 id="working-agreement">6. Working agreement</h2>
+    <ul>
+      <li>Update <a href="PLANNING.html">PLANNING.md</a> when scope changes or a phase completes.</li>
+      <li>When adding a calculator, copy the pattern of the first one built — don't reinvent layout per calculator.</li>
+      <li>Before claiming a calculator is done, verify the math against at least one external reference calculator with 3+ test cases.</li>
+      <li>Run <code>npm run build</code> and <code>npm run lint</code> before reporting work complete. Build failures = not done.</li>
+    </ul>
+
+    <hr>
+    <p class="header-meta">Companion: <a href="PLANNING.html">PLANNING.html</a> · <a href="README.html">README.html</a></p>
+  </main>
+</div>
+</body>
+</html>

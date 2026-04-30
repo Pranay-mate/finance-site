@@ -1,0 +1,209 @@
+If you work for a tech company in India, you probably have ESOPs, RSUs, or both. The grants look great on paper — until you actually exercise or sell them, and discover the Indian tax code's two-stage taxation that catches everyone off-guard.
+
+This guide covers exactly how ESOPs and RSUs are taxed in India, with worked examples, foreign-stock-specific rules, and the most common mistakes that cost employees lakhs in unnecessary tax.
+
+## TL;DR
+
+- **At exercise (ESOP) or vest (RSU)**: the difference between Fair Market Value (FMV) and your strike price is taxed as **salary perquisite** at your slab rate. TDS is deducted by your employer.
+- **At sale**: the difference between sale price and FMV (your new cost basis) is taxed as **capital gains** — short or long term depending on holding.
+- **Listed Indian shares**: LTCG above 12 months at 12.5% (over ₹1.25L/yr exemption); STCG at 20%.
+- **Unlisted / foreign shares**: LTCG above 24 months at 20% with indexation (or 12.5% without); STCG at slab rate.
+- **Foreign stocks** (Google, Microsoft RSUs etc.) follow unlisted rules + DTAA implications + Schedule FA disclosure.
+
+The dual taxation — salary + capital gains — is normal. The trap is paying salary tax on something you can't sell yet, then later paying capital gains on a depreciated asset.
+
+## ESOP vs RSU — the difference matters
+
+**ESOP (Employee Stock Option Plan)**: You get an *option* to buy shares at a fixed strike price. You pay the strike price to "exercise" and receive shares. Common in Indian startups; the strike price is often nominal (₹1-100/share).
+
+**RSU (Restricted Stock Unit)**: You're granted *restricted units* that convert to actual shares when they vest. No strike price to pay — they just appear in your account at vesting. Common in big tech companies (Google, Microsoft, Amazon, Meta).
+
+For tax purposes:
+
+- ESOP exercise = RSU vesting (both are the "perquisite" event).
+- The "strike price" for an RSU is effectively zero, so the entire FMV at vest is taxable.
+
+## Stage 1: Tax at exercise (or vest)
+
+Whether ESOP or RSU, the first tax hit happens when you receive the shares.
+
+The taxable amount is the **perquisite value** — defined as:
+
+> Perquisite = (FMV on exercise/vest date) − (strike price paid)
+
+This is added to your salary income and taxed at your slab rate. Your employer is required to deduct TDS at your applicable rate before crediting the shares to your demat or RSU account.
+
+### Worked example: ESOP exercise
+
+You're granted 1,000 ESOPs at strike ₹100/share. After 4 years, FMV is ₹500/share. You exercise all 1,000.
+
+- Strike paid: ₹100 × 1,000 = ₹1,00,000
+- FMV at exercise: ₹500 × 1,000 = ₹5,00,000
+- **Perquisite: ₹4,00,000** (₹5L − ₹1L)
+- Tax at 30% slab + 4% cess: ~₹1,24,800
+- TDS deducted by employer: ₹1,24,800
+
+**You now own ₹5L worth of shares**, but you've paid out ₹1L (strike) + ₹1,25K (tax via TDS) = ~₹2,25K of cash. Your effective cost basis is now ₹5L (FMV), not ₹1L (strike) — this is critical for stage 2.
+
+### RSU vest example
+
+You're granted 100 Google RSUs. They vest at FMV of $150/share (₹12,000/share at ₹80/$ — assume).
+
+- Strike: ₹0
+- Perquisite: ₹12,000 × 100 = ₹12,00,000
+- Tax at 30% + cess: ~₹3,74,400
+
+For RSUs, employers typically **sell-to-cover** — they automatically sell ~30% of vested shares to cover the TDS. So you receive ~70 shares net (₹8.4L worth) instead of all 100. The tax on the full 100-share value still goes to the IT Department.
+
+## Stage 2: Tax at sale
+
+When you actually sell the shares, capital gains tax applies on the difference between sale price and your cost basis (which is the FMV at exercise/vest, not the strike price).
+
+### Listed Indian company shares
+
+| Holding period | Tax type | Rate |
+| --- | --- | --- |
+| > 12 months | LTCG | 12.5% above ₹1.25L/yr exemption |
+| ≤ 12 months | STCG | 20% |
+
+Listed shares = company stock listed on NSE / BSE.
+
+### Unlisted Indian company shares (most Indian startups)
+
+| Holding period | Tax type | Rate |
+| --- | --- | --- |
+| > 24 months | LTCG | 20% with indexation (or 12.5% without) |
+| ≤ 24 months | STCG | Slab rate |
+
+Note the **24-month** threshold (vs 12 for listed). This trips up startup employees who exercise pre-IPO and sell soon after.
+
+### Foreign shares (US tech RSUs)
+
+Treated like unlisted Indian shares for holding-period purposes:
+
+| Holding period | Tax type | Rate |
+| --- | --- | --- |
+| > 24 months | LTCG | 12.5% (no indexation post-Budget 2024) |
+| ≤ 24 months | STCG | Slab rate |
+
+Plus you must disclose foreign holdings in **Schedule FA** of your ITR every year — penalties for non-disclosure are severe.
+
+### Worked example: ESOP sale
+
+Continuing from above. You exercised 1,000 shares at FMV ₹500. Two years later, the company IPOs and you sell at ₹800/share.
+
+- Sale proceeds: ₹800 × 1,000 = ₹8,00,000
+- Cost basis (FMV at exercise): ₹5,00,000
+- **Capital gain: ₹3,00,000**
+- If the company is listed at sale and you held > 12 months → LTCG at 12.5%, first ₹1.25L exempt → tax on ₹1.75L = ₹21,875 + cess.
+- If unlisted at sale or held < 24 months → falls into different brackets.
+
+**Your total tax across both stages**: ₹1.25L (perquisite tax at exercise) + ₹22K (capital gains at sale) = **~₹1.47L on ₹8L of total proceeds**, against an investment of ₹1L cash + ₹1.25L tax = ₹2.25L. Pre-tax profit ₹5.75L; post-tax profit ~₹4.28L.
+
+## The cashless exercise trap
+
+Most ESOP plans now offer "cashless exercise" — you exercise, the company simultaneously sells enough shares to cover both the strike price and the perquisite tax, and you keep the rest.
+
+This avoids the cash burden of stage 1, but it also means you only end up with a fraction of the shares. If the stock subsequently triples in value, you missed out on most of the upside on the shares you sold to fund the exercise.
+
+The mathematically optimal strategy depends on:
+
+1. Your conviction in the company's future stock price.
+2. Your available cash for paying the strike + tax up front.
+3. Whether the company is liquid (can you sell the remaining shares?).
+
+For high-conviction holds, paying cash to exercise and keeping all shares is optimal. For lower-conviction holds, cashless makes sense.
+
+## Foreign stock complications
+
+If you work for a US tech company with India ops (Google, Microsoft, Adobe, etc.), your RSUs are typically in the parent company's stock — listed in the US.
+
+### Tax stack for foreign RSUs
+
+1. **At vest**: India taxes the perquisite at your slab rate. TDS is deducted by your Indian employer.
+2. **At sale**: India taxes capital gains as foreign unlisted shares (24-month threshold).
+3. **Currency conversion**: Cost basis (in USD) is converted to INR at the vest-date exchange rate. Sale proceeds are converted at the sale-date rate. Currency moves can create or destroy taxable gain.
+
+### Schedule FA disclosure
+
+You **must** disclose all foreign assets — including unsold RSUs sitting in your E*TRADE / Charles Schwab account — in Schedule FA of your annual ITR. This includes:
+
+- Holding details (broker, account number, shares)
+- Peak balance during the year
+- Income from these shares (dividends if any)
+
+**Penalty for non-disclosure**: ₹10 lakh per year of non-disclosure under the Black Money Act. This is one of the most-overlooked compliance traps. Many tech employees discover this only during a tax notice.
+
+### Double-taxation avoidance
+
+Most countries with significant Indian tech employees (US, UK, Singapore) have a Double Tax Avoidance Agreement (DTAA) with India. The mechanics:
+
+- The US may withhold tax at source on dividends or capital gains.
+- India also taxes the same income.
+- You claim credit for tax paid abroad against your Indian tax liability.
+
+Foreign stock dividends are usually withheld at 15-25% by the source country. Foreign capital gains are typically not withheld (because India is the country of residence), but you still owe Indian tax on them.
+
+Form 67 must be filed before the ITR if you're claiming foreign tax credit.
+
+## The dual-tax pain (and the depreciation trap)
+
+The classic ESOP nightmare:
+
+- 2021: Exercise 5,000 ESOPs at strike ₹50, FMV ₹500. Perquisite tax: ₹6.75L paid out of pocket.
+- 2022-2023: Stock drops to ₹150 due to market crash + company struggles.
+- 2024: You sell at ₹150, realising a *capital loss* of (500−150) × 5000 = ₹17.5L.
+
+You paid tax on a perquisite value of ₹2.25 Cr that was only ever worth ₹75L when you finally sold. The capital loss can offset other capital gains in future years (or be carried forward 8 years), but it can't recover the perquisite tax paid in 2021.
+
+**Lesson**: If you exercise pre-IPO ESOPs at a high FMV, you're betting that the company will not crash before you can sell. A risk worth understanding.
+
+## Tax-saving strategies
+
+### Time exercises across financial years
+
+If you have ESOPs vesting in chunks, exercise across multiple FYs to spread the perquisite income across slabs. Each FY the surcharge thresholds (₹50L, ₹1Cr, ₹2Cr) reset — so a single mega-exercise can push you into 25%+ surcharge territory unnecessarily.
+
+### Use the 1.25L LTCG exemption every year
+
+Once you have shares post-exercise, harvest gains gradually. Sell enough each year to realise approximately ₹1.25L of capital gain (if listed equity), pay zero tax, immediately re-buy. Over 5 years that's ₹6.25L of tax-free realised gain.
+
+### Consider the 87A rebate timing
+
+If your "regular" income is below ₹12L (taxable) but a one-time perquisite would push you over, exercising in a higher-income year is suboptimal. If you can defer to a low-income year (e.g., between jobs), you might benefit from the rebate threshold.
+
+### Hold for 12 months post-exercise (listed)
+
+For listed shares, holding 12+ months post-exercise converts STCG (20%) to LTCG (12.5% above ₹1.25L). On a ₹10L gain, that's ~₹75K of tax savings.
+
+## Common mistakes
+
+1. **Forgetting Schedule FA disclosure** for foreign-listed RSUs — biggest penalty risk.
+2. **Confusing strike price with cost basis** at sale — perquisite tax already adjusts your cost basis up to FMV.
+3. **Not accounting for sell-to-cover** in your share count — your "100 RSUs" are actually 70 net of TDS.
+4. **Selling immediately after vest** to "lock in profit" — you're realising STCG at 20% when LTCG would have been 12.5%.
+5. **Exercising deep in the money on illiquid stocks** — prepaying tax on shares you can't sell.
+
+## Filing your ITR
+
+ESOP and RSU income is reported in:
+
+- **ITR-2** if you have capital gains, foreign income, or own foreign assets.
+- **Schedule Salary**: perquisite is auto-populated from Form 16.
+- **Schedule CG**: capital gains breakdown by holding period.
+- **Schedule FA**: foreign asset disclosure (mandatory for foreign-stock holders).
+- **Form 67**: file before ITR if claiming foreign tax credit.
+
+Most tech employees with RSUs need ITR-2, not ITR-1. Don't use auto-prepared forms blindly — verify the perquisite and capital gains schedules match your actual transactions.
+
+## Bottom line
+
+ESOPs and RSUs are taxed twice — once as salary at exercise/vest, then as capital gains at sale. The cost basis bumps to FMV at the perquisite event, so you're not double-taxed on the same gain.
+
+The traps are operational, not legal:
+
+- Cash burden of perquisite tax on illiquid shares.
+- Schedule FA penalties for foreign holdings.
+- Lost optimisation when you don't time exercises strategically.
+
+Use our [Income Tax Calculator](/calculators/income-tax-calculator) to model the slab impact of a planned exercise. For a portfolio of vested shares with multiple lots, the [XIRR Calculator](/calculators/xirr-calculator) can compute your true post-tax annualised return across the entire ESOP journey — useful for evaluating offers from competing employers.
