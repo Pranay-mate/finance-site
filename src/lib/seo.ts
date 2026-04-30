@@ -52,4 +52,7 @@ export const rootMetadata: Metadata = {
   creator: SITE.organization.legalName,
   publisher: SITE.organization.legalName,
   formatDetection: { email: false, address: false, telephone: false },
+  verification: {
+    google: "piqFkbWW4n4RAVn3kyzNkLSkTdqzA9iAAC1afe-lJZQ",
+  },
 };
