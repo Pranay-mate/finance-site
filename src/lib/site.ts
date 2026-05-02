@@ -1,13 +1,14 @@
 export const SITE = {
-  name: "Finance Site",
-  shortName: "FinSite",
+  name: "WisePaisa",
+  shortName: "WisePaisa",
+  tagline: "Plan your money the wise way.",
   description:
-    "Free, accurate financial calculators for Indian investors. SIP, lumpsum, PPF, EPF, FD, RD, EMI, income tax, GST, XIRR and more.",
+    "Plan your money the wise way. Free financial calculators for India — SIP, PPF, EPF, EMI, income tax, GST, XIRR, FIRE, and more.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
   locale: "en_IN",
   twitterHandle: "" as const,
   organization: {
-    legalName: "Finance Site",
+    legalName: "WisePaisa",
     foundingYear: 2026,
   },
 } as const;
