@@ -10,15 +10,8 @@ export default function manifest(): MetadataRoute.Manifest {
     display: "standalone",
     background_color: "#ffffff",
     theme_color: "#0b0d12",
-    icons: [
-      { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
-      {
-        src: "/icon-512-maskable.png",
-        sizes: "512x512",
-        type: "image/png",
-        purpose: "maskable",
-      },
-    ],
+    // Icons removed until branded PNGs exist. Browsers fall back to
+    // /favicon.ico (handled by Next.js' file-based convention) for now.
+    icons: [],
   };
 }
