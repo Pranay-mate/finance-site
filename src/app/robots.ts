@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { absoluteUrl, SITE } from "@/lib/site";
+import { absoluteUrl } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   // Block indexing only when explicitly opted into staging mode.
@@ -13,6 +13,7 @@ export default function robots(): MetadataRoute.Robots {
       ? [{ userAgent: "*", disallow: "/" }]
       : [{ userAgent: "*", allow: "/" }],
     sitemap: absoluteUrl("/sitemap.xml"),
-    host: SITE.url,
+    // Note: omitting `host` — it's a Yandex-only directive that Googlebot
+    // ignores and GSC flags as a warning.
   };
 }
