@@ -34,7 +34,32 @@ export const CALCULATORS: Calculator[] = [
     keywords: ["emi calculator", "home loan emi", "car loan emi", "personal loan emi"],
     category: "loan",
     complexity: "low",
-    related: ["fd-calculator", "lumpsum-calculator", "income-tax-calculator"],
+    related: [
+      "home-loan-eligibility-calculator",
+      "lumpsum-calculator",
+      "income-tax-calculator",
+    ],
+    status: "live",
+  },
+  {
+    slug: "home-loan-eligibility-calculator",
+    title: "Home Loan Eligibility Calculator",
+    shortTitle: "Loan Eligibility",
+    description:
+      "Find the maximum home loan you can get on your salary using India's standard FOIR model.",
+    metaTitle: "Home Loan Eligibility Calculator — Max Loan on Your Salary",
+    metaDescription:
+      "Calculate the maximum home loan you qualify for based on your monthly income, existing EMIs, interest rate and tenure. Uses the FOIR model used by HDFC, SBI and ICICI.",
+    keywords: [
+      "home loan eligibility calculator",
+      "loan eligibility calculator india",
+      "how much home loan can i get",
+      "max loan on salary",
+      "foir calculator",
+    ],
+    category: "loan",
+    complexity: "medium",
+    related: ["emi-calculator", "income-tax-calculator", "salary-calculator"],
     status: "live",
   },
   {
@@ -48,7 +73,29 @@ export const CALCULATORS: Calculator[] = [
     keywords: ["fd calculator", "fixed deposit calculator", "fd maturity calculator"],
     category: "deposit",
     complexity: "low",
-    related: ["rd-calculator", "ppf-calculator", "lumpsum-calculator"],
+    related: ["post-tax-fd-calculator", "rd-calculator", "ppf-calculator"],
+    status: "live",
+  },
+  {
+    slug: "post-tax-fd-calculator",
+    title: "Post-tax FD Calculator",
+    shortTitle: "Post-tax FD",
+    description:
+      "See your real FD return after slab-rate tax — what most calculators don't show.",
+    metaTitle: "Post-tax FD Calculator — Real Returns After Income Tax",
+    metaDescription:
+      "Calculate your fixed deposit's actual post-tax return based on your income tax slab. Includes 4% cess, senior-citizen 80TTB exemption, and pre vs post-tax CAGR.",
+    keywords: [
+      "post tax fd calculator",
+      "fd tax calculator",
+      "fd interest taxation calculator",
+      "fd return after tax",
+      "tds on fd calculator",
+      "fd vs ppf post tax",
+    ],
+    category: "deposit",
+    complexity: "medium",
+    related: ["fd-calculator", "income-tax-calculator", "real-return-calculator"],
     status: "live",
   },
   {
@@ -192,7 +239,7 @@ export const CALCULATORS: Calculator[] = [
     ],
     category: "tax",
     complexity: "high",
-    related: ["epf-calculator", "ppf-calculator", "gst-calculator"],
+    related: ["post-tax-fd-calculator", "epf-calculator", "ppf-calculator"],
     status: "live",
   },
   {

@@ -7,8 +7,8 @@ import {
 } from "./registry";
 
 describe("calculator registry", () => {
-  it("has 17 calculators registered", () => {
-    expect(CALCULATORS).toHaveLength(17);
+  it("has 19 calculators registered", () => {
+    expect(CALCULATORS).toHaveLength(19);
   });
 
   it("has unique slugs", () => {
