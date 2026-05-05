@@ -65,7 +65,7 @@ export default function AboutPage() {
               shaky defaults. They use 3% inflation (a US figure) when India&apos;s
               long-run average is closer to 6%. They show a SIP corpus number
               but don&apos;t check whether it actually survives a 30-year retirement.
-              They list "Section 80C" as a feature without explaining how the
+              They list &ldquo;Section 80C&rdquo; as a feature without explaining how the
               new tax regime makes it irrelevant for most people now.
             </p>
             <p>
