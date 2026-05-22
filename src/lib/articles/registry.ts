@@ -276,6 +276,34 @@ export const ARTICLES: Article[] = [
     relatedArticles: ["ppf-vs-epf-vs-elss", "mutual-fund-taxation-india", "how-much-sip-for-1-crore"],
     status: "live",
   },
+  {
+    slug: "post-office-savings-rates",
+    title: "Post Office Savings Schemes — Latest Interest Rates",
+    description:
+      "Every Government of India small-savings scheme — PPF, SCSS, NSC, Sukanya, Kisan Vikas Patra, Post Office RD / Time Deposit / MIS — with current interest rates, eligibility, tax treatment, and a clear decision framework.",
+    metaTitle: "Post Office Savings Rates 2026 — PPF, RD, SCSS, NSC",
+    metaDescription:
+      "Current interest rates for every Post Office and Government of India small-savings scheme: PPF (7.1%), SCSS (8.2%), NSC (7.7%), Sukanya (8.2%), Post Office RD (6.7%) and more. Quarterly updates from the Ministry of Finance notification.",
+    keywords: [
+      "post office savings rates",
+      "post office rd interest rate",
+      "ppf rate 2026",
+      "scss interest rate",
+      "nsc interest rate",
+      "sukanya samriddhi yojana rate",
+      "small savings rate india",
+      "post office td rate",
+      "kvp interest rate",
+    ],
+    category: "savings",
+    readingTime: 6,
+    wordCount: 1100,
+    publishedDate: "2026-05-23",
+    updatedDate: "2026-05-23",
+    relatedCalculators: ["ppf-calculator", "fd-calculator"],
+    relatedArticles: ["ppf-vs-epf-vs-elss", "nps-vs-ppf"],
+    status: "live",
+  },
 ];
 
 export function getArticle(slug: string): Article | undefined {
